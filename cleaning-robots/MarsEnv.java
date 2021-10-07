@@ -133,6 +133,7 @@ public class MarsEnv extends Environment {
                 r1.y = 0;
             }
             // finished searching the whole grid
+            // TASK 3 (b): move continously
             if (r1.x == getWidth()) {
                 r1.x = 0;
                 r1.y = 0;
