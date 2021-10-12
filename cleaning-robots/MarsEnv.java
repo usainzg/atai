@@ -97,7 +97,7 @@ public class MarsEnv extends Environment {
         Random random = new Random(System.currentTimeMillis());
 
         private MarsModel() {
-            super(GSize, GSize, 2);
+            super(GSize, GSize, 3);
 
             // initial location of agents
             try {
@@ -107,6 +107,8 @@ public class MarsEnv extends Environment {
                 // TASK 1 (b): randomly placing r2 agent
                 Location r2Loc = new Location(random.nextInt(GSize), random.nextInt(GSize));
                 setAgPos(1, r2Loc);
+                setAgPos(2, 0, 0);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -126,8 +128,10 @@ public class MarsEnv extends Environment {
 
         void nextSlot() throws Exception {
             Location r1 = getAgPos(0);
+            Location r3 = getAgPos(2);
             // TASK 3 (a): move top-down 
             r1.y++;
+            r3.x++;
             if (r1.y == getHeight()) {
                 r1.x++;
                 r1.y = 0;
@@ -140,6 +144,15 @@ public class MarsEnv extends Environment {
             }
             setAgPos(0, r1);
             setAgPos(1, getAgPos(1)); // just to draw it in the view
+
+            if (r3.x == getWidth()){
+                r3.x = 0;
+                r3.y++;
+            }
+            if (r3.y == getHeight()){
+                r3.y = 0;
+            }
+            setAgPos(2, r3); 
         }
 
         void moveTowards(int x, int y) throws Exception {
@@ -154,6 +167,7 @@ public class MarsEnv extends Environment {
                 r1.y--;
             setAgPos(0, r1);
             setAgPos(1, getAgPos(1)); // just to draw it in the view
+            setAgPos(2, getAgPos(2)); // just to draw it in the view
         }
 
         void pickGarb() {
@@ -219,6 +233,9 @@ public class MarsEnv extends Environment {
                     label += " - G";
                     c = Color.orange;
                 }
+            }
+            if (id == 2) {
+                c = Color.red;
             }
             super.drawAgent(g, x, y, c, -1);
             if (id == 0) {
