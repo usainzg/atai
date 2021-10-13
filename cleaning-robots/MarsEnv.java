@@ -27,6 +27,10 @@ public class MarsEnv extends Environment {
     private MarsModel model;
     private MarsView  view;
 
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
     @Override
     public void init(String[] args) {
         model = new MarsModel();
@@ -159,7 +163,7 @@ public class MarsEnv extends Environment {
             if (cont == garbdrop){
                 cont = 0;
                 add(GARB, getAgPos(2));
-                garbdrop = random.nextInt(12);
+                garbdrop = getRandomNumber(1, 12);
             }
             cont++;
         }
@@ -261,6 +265,8 @@ public class MarsEnv extends Environment {
             g.setColor(Color.white);
             drawString(g, x, y, defaultFont, "G");
         }
+
+        
 
     }
 }
