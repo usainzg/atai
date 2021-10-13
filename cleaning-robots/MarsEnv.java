@@ -158,8 +158,6 @@ public class MarsEnv extends Environment {
                 r3.y = 0;
             }
             setAgPos(2, r3);
-            System.out.println(cont);
-            System.out.println(garbdrop);
             if (cont == garbdrop){
                 cont = 0;
                 add(GARB, getAgPos(2));
