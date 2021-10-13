@@ -91,13 +91,14 @@ public class MarsEnv extends Environment {
     class MarsModel extends GridWorldModel {
 
         public static final int MErr = 2; // max error in pick/burn garb
-        int nerr = 0, burnerr = 0; // number of tries of pick/burn garb
+        int nerr = 0, burnerr = 0, cont = 0; // number of tries of pick/burn garb
         boolean r1HasGarb = false; // whether r1 is carrying garbage or not
-
+        int garbdrop;
         Random random = new Random(System.currentTimeMillis());
 
         private MarsModel() {
             super(GSize, GSize, 3);
+            garbdrop = random.nextInt(12);
 
             // initial location of agents
             try {
@@ -152,7 +153,15 @@ public class MarsEnv extends Environment {
             if (r3.y == getHeight()){
                 r3.y = 0;
             }
-            setAgPos(2, r3); 
+            setAgPos(2, r3);
+            System.out.println(cont);
+            System.out.println(garbdrop);
+            if (cont == garbdrop){
+                cont = 0;
+                add(GARB, getAgPos(2));
+                garbdrop = random.nextInt(12);
+            }
+            cont++;
         }
 
         void moveTowards(int x, int y) throws Exception {
