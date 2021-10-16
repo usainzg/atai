@@ -147,10 +147,8 @@ public class MarsEnv extends Environment {
 
         void nextSlot() throws Exception {
             Location r1 = getAgPos(0);
-            Location r3 = getAgPos(2);
             // TASK 3 (a): move top-down 
             r1.y++;
-            r3.x++;
             if (r1.y == getHeight()) {
                 r1.x++;
                 r1.y = 0;
@@ -181,10 +179,6 @@ public class MarsEnv extends Environment {
                 if (id == i) setAgPos(i, loc);
                 else setAgPos(i, getAgPos(i));
             }
-            
-            setAgPos(0, getAgPos(0));
-            setAgPos(1, getAgPos(1)); // just to draw it in the view
-            setAgPos(2, getAgPos(2)); // just to draw it in the view
         }
 
         void pickGarb() {
