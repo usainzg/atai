@@ -1,12 +1,19 @@
 // Agent r3 in project mars.mas2j
 
-/* Initial beliefs and rules */
+!wander(S).
 
-/* Initial goals */
++!make_garb(S): not garbage(r3) 
+	<- 
+    ?pos(r3, X, Y);
+	gen_garb(X, Y);
+	!wander(S).
 
-!start.
-
-/* Plans */
-
-
-
++!make_garb(S) 
+    <- 
+    !wander(S).
+		   
++!wander(S) 
+    <- 
+    move_around(S);  
+    !make_garb(S);
+    !wander(S).

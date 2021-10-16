@@ -21,11 +21,14 @@ public class MarsEnv extends Environment {
     public static final Term    bg = Literal.parseLiteral("burn(garb)");
     public static final Literal g1 = Literal.parseLiteral("garbage(r1)");
     public static final Literal g2 = Literal.parseLiteral("garbage(r2)");
+    public static final Literal g3 = Literal.parseLiteral("garbage(r3");
 
     static Logger logger = Logger.getLogger(MarsEnv.class.getName());
 
     private MarsModel model;
     private MarsView  view;
+
+    private Literal target = null;
 
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
@@ -46,9 +49,14 @@ public class MarsEnv extends Environment {
             if (action.equals(ns)) {
                 model.nextSlot();
             } else if (action.getFunctor().equals("move_towards")) {
-                int x = (int)((NumberTerm)action.getTerm(0)).solve();
-                int y = (int)((NumberTerm)action.getTerm(1)).solve();
-                model.moveTowards(x,y);
+                int id = (int)((NumberTerm)action.getTerm(0)).solve();
+                int x = (int)((NumberTerm)action.getTerm(1)).solve();
+                int y = (int)((NumberTerm)action.getTerm(2)).solve();
+                model.moveTowards(id, x, y);
+            } else if (action.getFunctor().equals("move_around")) {
+                model.moveAround();
+            } else if (action.getFunctor().equals("gen_garb")) {
+                model.genGarb();
             } else if (action.equals(pg)) {
                 model.pickGarb();
             } else if (action.equals(dg)) {
@@ -65,7 +73,7 @@ public class MarsEnv extends Environment {
         updatePercepts();
 
         try {
-            Thread.sleep(200);
+            Thread.sleep(500);
         } catch (Exception e) {}
         informAgsEnvironmentChanged();
         return true;
@@ -77,18 +85,24 @@ public class MarsEnv extends Environment {
 
         Location r1Loc = model.getAgPos(0);
         Location r2Loc = model.getAgPos(1);
+        Location r3Loc = model.getAgPos(2);
 
         Literal pos1 = Literal.parseLiteral("pos(r1," + r1Loc.x + "," + r1Loc.y + ")");
         Literal pos2 = Literal.parseLiteral("pos(r2," + r2Loc.x + "," + r2Loc.y + ")");
+        Literal pos3 = Literal.parseLiteral("pos(r3," + r3Loc.x + "," + r3Loc.y + ")");
 
         addPercept(pos1);
         addPercept(pos2);
+        addPercept(pos3);
 
         if (model.hasObject(GARB, r1Loc)) {
             addPercept(g1);
         }
         if (model.hasObject(GARB, r2Loc)) {
             addPercept(g2);
+        }
+        if (model.hasObject(GARB, r3Loc)) {
+            addPercept(g3);
         }
     }
 
@@ -112,7 +126,7 @@ public class MarsEnv extends Environment {
                 // TASK 1 (b): randomly placing r2 agent
                 Location r2Loc = new Location(random.nextInt(GSize), random.nextInt(GSize));
                 setAgPos(1, r2Loc);
-                setAgPos(2, 0, 0);
+                setAgPos(2, random.nextInt(GSize), random.nextInt(GSize));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -149,34 +163,26 @@ public class MarsEnv extends Environment {
             }
             setAgPos(0, r1);
             setAgPos(1, getAgPos(1)); // just to draw it in the view
-
-            if (r3.x == getWidth()){
-                r3.x = 0;
-                r3.y++;
-            }
-            if (r3.y == getHeight()){
-                r3.y = 0;
-            }
-            setAgPos(2, r3);
-            if (cont == garbdrop){
-                cont = 0;
-                add(GARB, getAgPos(2));
-                garbdrop = getRandomNumber(1, 12);
-            }
-            cont++;
+            setAgPos(2, getAgPos(2));
         }
 
-        void moveTowards(int x, int y) throws Exception {
-            Location r1 = getAgPos(0);
-            if (r1.x < x)
-                r1.x++;
-            else if (r1.x > x)
-                r1.x--;
-            if (r1.y < y)
-                r1.y++;
-            else if (r1.y > y)
-                r1.y--;
-            setAgPos(0, r1);
+        void moveTowards(int id, int x, int y) throws Exception {
+            Location loc = getAgPos(id);
+            if (loc.x < x)
+                loc.x++;
+            else if (loc.x > x)
+                loc.x--;
+            if (loc.y < y)
+                loc.y++;
+            else if (loc.y > y)
+                loc.y--;
+            
+            for (int i = 0; i < 3; i++) {
+                if (id == i) setAgPos(i, loc);
+                else setAgPos(i, getAgPos(i));
+            }
+            
+            setAgPos(0, getAgPos(0));
             setAgPos(1, getAgPos(1)); // just to draw it in the view
             setAgPos(2, getAgPos(2)); // just to draw it in the view
         }
@@ -213,6 +219,25 @@ public class MarsEnv extends Environment {
                 }
             }
         }
+
+        void moveAround() {
+            Location loc = getAgPos(2);
+            int stepX = 0, stepY = 0;
+
+            stepX = random.nextInt(2);
+            if ((loc.x > 0 && random.nextBoolean()) || loc.x == GSize - 1) stepX *= -1;
+            stepY = random.nextInt(2);
+            if ((loc.y > 0 && random.nextBoolean()) || loc.y == GSize - 1) stepY *= -1;
+
+            setAgPos(2, loc.x + stepX, loc.y + stepY);
+            setAgPos(0, getAgPos(0));
+            setAgPos(1, getAgPos(1));
+        }
+
+        void genGarb() {
+            Location loc = getAgPos(2);
+            if (!model.hasObject(GARB, loc) && random.nextFloat() < 0.1) add(GARB, loc);
+        }
     }
 
     class MarsView extends GridWorldView {
@@ -244,12 +269,11 @@ public class MarsEnv extends Environment {
                     label += " - G";
                     c = Color.orange;
                 }
-            }
-            if (id == 2) {
-                c = Color.red;
+            } else if (id == 2) {
+                c = Color.pink;
             }
             super.drawAgent(g, x, y, c, -1);
-            if (id == 0) {
+            if (id == 0 || id == 2) {
                 g.setColor(Color.black);
             } else {
                 g.setColor(Color.white);
