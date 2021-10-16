@@ -198,6 +198,7 @@ public class MarsEnv extends Environment {
                     r1HasGarb = true;
                 } else {
                     nerr++;
+                    System.out.println("[LOG] Failed picking garbage " + nerr + " times.");
                 }
             }
         }
@@ -216,6 +217,7 @@ public class MarsEnv extends Environment {
                     burnerr = 0;
                 } else {
                     burnerr += 1;
+                    System.out.println("[LOG] Failed burning garbage " + burnerr + " times.");
                 }
             }
         }
