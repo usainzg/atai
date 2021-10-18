@@ -28,7 +28,7 @@ battery(30).
    -at(_);
    -garbage(r1);
    - pos(last, X, Y);
-   .drop_intentions;
+   .drop_all_intentions;
    !charge_agent(charge).
 
 +!charge_agent(charge) : true
@@ -42,7 +42,7 @@ battery(30).
    -at(_);
    -garbage(r1);
    -charge;
-   .drop_intentions;
+   .drop_all_intentions;
    !check(slots).
 
 +!charging(r) : battery(L) & L < 100 & charge
@@ -52,7 +52,7 @@ battery(30).
    .wait(100);
    !charging(r).
 
-+!charging(r) : battery(L) & L == 100 & charge
++!charging(r) : battery(L) & L == 100 & charge.
 
 
 @lg[atomic]

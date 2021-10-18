@@ -21,7 +21,7 @@ public class MarsEnv extends Environment {
     public static final Term    bg = Literal.parseLiteral("burn(garb)");
     public static final Literal g1 = Literal.parseLiteral("garbage(r1)");
     public static final Literal g2 = Literal.parseLiteral("garbage(r2)");
-    public static final Literal g3 = Literal.parseLiteral("garbage(r3");
+    public static final Literal g3 = Literal.parseLiteral("garbage(r3)");
 
     static Logger logger = Logger.getLogger(MarsEnv.class.getName());
 
@@ -122,7 +122,7 @@ public class MarsEnv extends Environment {
         boolean showBattery = false;
 
         private MarsModel() {
-            super(GSize, GSize, 3);
+            super(GSize, GSize, 4);
             garbdrop = random.nextInt(12);
 
             // initial location of agents
@@ -275,6 +275,7 @@ public class MarsEnv extends Environment {
         @Override
         public void drawAgent(Graphics g, int x, int y, Color c, int id) {
             String label = "R"+(id+1);
+            if (id == 3) label = "Charger";
             c = Color.blue;
             if (id == 0) {
                 c = Color.yellow;
@@ -303,7 +304,7 @@ public class MarsEnv extends Environment {
                 g.setColor(Color.white);
             }
             super.drawString(g, x, y, defaultFont, label);
-            // repaint();
+            repaint();
         }
 
         public void drawGarb(Graphics g, int x, int y) {
