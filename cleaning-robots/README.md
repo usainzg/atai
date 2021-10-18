@@ -109,7 +109,7 @@ The process can be summarized as follows:
 - Move the agent continuosly using the `moveAround()` function.
 - Generate garbage where there is no previous garbage and a probability of 10%, using: `if (!model.hasObject(GARB, loc) && random.nextFloat() < 0.1) add(GARB, loc);`
 
-# Task 4 - Include a new task at your choice.
+# Task 5 - Include a new task at your choice.
 For this additional task we create a r4 agent that is a battery charger, so the r1 agent will have a battery level that decreases with every move. When the r1 agent has no more battery, it will go to the charger (r4) location.
 
 In the constructor of the `MarsModel` class we added a r4 agent at a initial random position. 
