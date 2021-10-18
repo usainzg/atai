@@ -53,6 +53,8 @@ public class MarsEnv extends Environment {
                 int x = (int)((NumberTerm)action.getTerm(1)).solve();
                 int y = (int)((NumberTerm)action.getTerm(2)).solve();
                 model.moveTowards(id, x, y);
+            } else if (action.getFunctor().equals("show_battery")) {
+                model.showBattery((int)((NumberTerm) action.getTerm(0)).solve());
             } else if (action.getFunctor().equals("move_around")) {
                 model.moveAround();
             } else if (action.getFunctor().equals("gen_garb")) {
@@ -73,7 +75,7 @@ public class MarsEnv extends Environment {
         updatePercepts();
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(400);
         } catch (Exception e) {}
         informAgsEnvironmentChanged();
         return true;
@@ -86,14 +88,17 @@ public class MarsEnv extends Environment {
         Location r1Loc = model.getAgPos(0);
         Location r2Loc = model.getAgPos(1);
         Location r3Loc = model.getAgPos(2);
+        Location r4Loc = model.getAgPos(3);
 
         Literal pos1 = Literal.parseLiteral("pos(r1," + r1Loc.x + "," + r1Loc.y + ")");
         Literal pos2 = Literal.parseLiteral("pos(r2," + r2Loc.x + "," + r2Loc.y + ")");
         Literal pos3 = Literal.parseLiteral("pos(r3," + r3Loc.x + "," + r3Loc.y + ")");
+        Literal pos4 = Literal.parseLiteral("pos(r4," + r4Loc.x + "," + r4Loc.y + ")");
 
         addPercept(pos1);
         addPercept(pos2);
         addPercept(pos3);
+        addPercept(pos4);
 
         if (model.hasObject(GARB, r1Loc)) {
             addPercept(g1);
@@ -113,6 +118,8 @@ public class MarsEnv extends Environment {
         boolean r1HasGarb = false; // whether r1 is carrying garbage or not
         int garbdrop;
         Random random = new Random(System.currentTimeMillis());
+        int batteryLevel = 0;
+        boolean showBattery = false;
 
         private MarsModel() {
             super(GSize, GSize, 3);
@@ -127,7 +134,8 @@ public class MarsEnv extends Environment {
                 Location r2Loc = new Location(random.nextInt(GSize), random.nextInt(GSize));
                 setAgPos(1, r2Loc);
                 setAgPos(2, random.nextInt(GSize), random.nextInt(GSize));
-
+                
+                setAgPos(3, getFreePos());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -162,6 +170,7 @@ public class MarsEnv extends Environment {
             setAgPos(0, r1);
             setAgPos(1, getAgPos(1)); // just to draw it in the view
             setAgPos(2, getAgPos(2));
+            setAgPos(3, getAgPos(3));
         }
 
         void moveTowards(int id, int x, int y) throws Exception {
@@ -175,7 +184,7 @@ public class MarsEnv extends Environment {
             else if (loc.y > y)
                 loc.y--;
             
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (id == i) setAgPos(i, loc);
                 else setAgPos(i, getAgPos(i));
             }
@@ -196,12 +205,14 @@ public class MarsEnv extends Environment {
                 }
             }
         }
+
         void dropGarb() {
             if (r1HasGarb) {
                 r1HasGarb = false;
                 add(GARB, getAgPos(0));
             }
         }
+
         void burnGarb() {
             // r2 location has garbage
             if (model.hasObject(GARB, getAgPos(1))) {
@@ -228,11 +239,17 @@ public class MarsEnv extends Environment {
             setAgPos(2, loc.x + stepX, loc.y + stepY);
             setAgPos(0, getAgPos(0));
             setAgPos(1, getAgPos(1));
+            setAgPos(3, getAgPos(3));
         }
 
         void genGarb() {
             Location loc = getAgPos(2);
             if (!model.hasObject(GARB, loc) && random.nextFloat() < 0.1) add(GARB, loc);
+        }
+
+        void showBattery(int level) {
+            batteryLevel = level;
+            showBattery = true;
         }
     }
 
@@ -264,8 +281,19 @@ public class MarsEnv extends Environment {
                 if (((MarsModel)model).r1HasGarb) {
                     label += " - G";
                     c = Color.orange;
+                // SHOW THE BATTERY LEVEL!
+                } else if (((MarsModel)model).showBattery) {
+                    int level = ((MarsModel)model).batteryLevel;
+                    label += "-" + Integer.toString(level) + "%";
+                    if (level < 10) {
+                        c = Color.red;
+                    } else if (level < 30) {
+                        c = Color.orange;
+                    }
                 }
             } else if (id == 2) {
+                c = Color.green;
+            } else if (id == 3) {
                 c = Color.pink;
             }
             super.drawAgent(g, x, y, c, -1);
@@ -275,7 +303,7 @@ public class MarsEnv extends Environment {
                 g.setColor(Color.white);
             }
             super.drawString(g, x, y, defaultFont, label);
-            repaint();
+            // repaint();
         }
 
         public void drawGarb(Graphics g, int x, int y) {
@@ -283,8 +311,5 @@ public class MarsEnv extends Environment {
             g.setColor(Color.white);
             drawString(g, x, y, defaultFont, "G");
         }
-
-        
-
     }
 }

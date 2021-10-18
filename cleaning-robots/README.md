@@ -118,5 +118,5 @@ We added the "battery logic" in the `r1.asl` file:
 
 - The r1 agent will have an initial belief of `battery(30)`.
 - The `check(slot)` plan will reduce the battery each time this plan is executed, only if the `charge` belief is not included.
-- When the battery is empty, we remove all the intentions remaining and all the `at(), pos()` beliefs. After that, we activate the plan `!chargeAgent(charge)`.
-    - `!chargeAgent(charge)`: move the r1 agent to the charger location, activating the `charge` belief. When the battery is full, move to the original position and reactivate the `check(slot)` plan.
+- When the battery is empty, we remove all the intentions remaining and all the `at(), pos()` beliefs. After that, we activate the plan `!charge_agent(charge)`.
+    - `!charge_agent(charge)`: move the r1 agent to the charger location, activating the `charge` belief. When the battery is full, move to the original position and reactivate the `check(slots)` plan.
