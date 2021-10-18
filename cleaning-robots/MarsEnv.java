@@ -133,7 +133,7 @@ public class MarsEnv extends Environment {
                 // TASK 1 (b): randomly placing r2 agent
                 Location r2Loc = new Location(random.nextInt(GSize), random.nextInt(GSize));
                 setAgPos(1, r2Loc);
-                setAgPos(2, random.nextInt(GSize), random.nextInt(GSize));
+                setAgPos(2, getFreePos());
                 
                 setAgPos(3, getFreePos());
             } catch (Exception e) {
