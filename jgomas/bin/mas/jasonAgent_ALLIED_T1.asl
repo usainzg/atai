@@ -17,6 +17,7 @@ type("CLASS_SOLDIER").
 
 
 
+
 // Plans
 
 
@@ -44,6 +45,27 @@ type("CLASS_SOLDIER").
 <-  ?debug(Mode); if (Mode<=2) { .println("Looking for agents to aim."); }
 ?fovObjects(FOVObjects);
 .length(FOVObjects, Length);
+
+
+
+// ------------------ Task 1 -----------------------
+
+?my_position(X,Y,Z);
+.println("[TASK - 1] My position: ", math.round(X),", ", math.round(Z));
+
+
+?objective(FlagX,FlagY, FlagZ);
+!distance(pos(FlagX,FlagY,FlagZ)); // Calculate de distance from agent's position to the flag
+?distance(D);
+.println("[TASK - 1] Distance to the flag: ", math.round(D), " units");
+
+
+?base_position(BaseX,BaseY,BaseZ);
+!distance(pos(BaseX,BaseY,BaseZ)); // Calculate de distance from agent's position to the base
+?distance(Db);
+.println("[TASK - 1] Distance from the base: ", math.round(Db) , " units" );
+
+// ------------------ End Task 1 -----------------------
 
 ?debug(Mode); if (Mode<=1) { .println("El numero de objetos es:", Length); }
 
@@ -143,26 +165,8 @@ if (Length > 0) {
 * <em> It's very useful to overload this plan. </em>
 * 
 */
-
-+!perform_look_action
-    <- 
-    ?my_position(X, Y, Z);
-    ?flag(FlagX, FlagY, FlagZ);
-    
-    // TODO: check if agent is porting the flag in order to update its position.
-    !distance(pos(FlagX, FlagY, FlagZ));
-    ?distance(FlagDist);
-    -distance(_);
-    ?alliedBase(BaseX, BaseY, BaseZ);
-    !distance(pos(BaseX, BaseY, BaseZ));
-    ?distance(BaseDist);
-    -distance(_);
-    .println("Self: (", X, ", ", Y, ", ", Z, ")");
-    .println("Distance to Flag: ", FlagDist);
-    .println("Distance to Base: ", BaseDist);
-    .println("-----------------------------------------------------------")
-    . 
-    
++!perform_look_action .
+   /// <- ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR PERFORM_LOOK_ACTION GOES HERE.") }. 
 
 /**
 * Action to do if this agent cannot shoot.
@@ -332,11 +336,6 @@ if (Length > 0) {
 /////////////////////////////////
 
 +!init
-    <-
-    ?debug(Mode);
-    if (Mode <= 1) { .println("YOUR CODE FOR init GOES HERE.")};
-    ?my_position(X, Y, Z);
-    +alliedBase(X, Y, Z);
-    ?objective(FlagX, FlagY, FlagZ);
-    +flag(FlagX, FlagY, FlagZ).  
-    
+   <- ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
+   ?my_position(X,Y,Z);
+   -+base_position(X,Y,Z).  
