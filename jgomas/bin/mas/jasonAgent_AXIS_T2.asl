@@ -45,7 +45,6 @@ patrollingRadius(64).
         ?fovObjects(FOVObjects);
         .length(FOVObjects, Length);
 
-
         // ------------- Task 2 ---------------- 
         ?is_crazy(C);
         ?rand_mov(N);
@@ -53,7 +52,7 @@ patrollingRadius(64).
             -rand_mov(N);
             +rand_mov(1);
             .random(X);
-            .println("[TASK - 2] Moving randomly");
+            .println("[TASK 2] Moving randomly");
             if(X < 1/4){
               -+order(up);  
             }else{
@@ -67,14 +66,19 @@ patrollingRadius(64).
                     }
                 }
             }
-            // Change to random value .random([up,down,left,right],X);
-            //
-            //
         }else{
             -rand_mov(N);
             +rand_mov(N+1);
-        }
 
+            if(wanna_follow_me(A)){
+                ?wanna_follow_me(A);
+                ?my_position(X,Y,Z);
+                .concat("order(move,",X,",",Z,")",Content);
+                .send_msg_with_conversation_id(A,tell,Content,"INT");
+                .println("[Task 3] Come!");
+                -+wanna_follow_me(A);            
+            }
+        }
 
         
         ?debug(Mode); if (Mode<=1) { .println("El numero de objetos es:", Length); }
@@ -135,6 +139,12 @@ patrollingRadius(64).
         //.//;
         !look.
       
+
++wanna_follow_crazy_one [source(A)]
+    <-
+    .println("[TASK 3] I am the crazy one, follow me!");
+    -+wanna_follow_me(A);
+    -wanna_follow_crazy_one.
 
 /////////////////////////////////
 //  PERFORM ACTIONS
