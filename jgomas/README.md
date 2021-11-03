@@ -67,3 +67,50 @@ Until we reach the 10 ticks to generate the random number, the tick counter is i
 ```
 
 # Task 3 - Implement an AXIS agent that locates his "crazy" partner and follows him.
+The behaviour of the new soldier created at `jasonAgent_AXIS_T3.asl` is quite similar to a regular soldier's one, but, in this case, he follows his crazy partner who moves randomly.
+
+To complete this task, we edited the "crazy" soldier, in the `jasonAgent_AXIS_T2.asl` file. We added a new plan `wanna_follow_crazy_one[source(A)]`, which is activated once another soldier sends him a message with the `wanna_follow_crazy_one` plan. The crazy agent creates a new belief `wanna_follow_me(A)`, where `A` is the agent who wants to follow the crazy one.
+
+Also, we edited the `get_agent_to_aim`, so everytime the tick counter is increased, the crazy agent sends to the follower an order to move to his actual position.
+
+## jasonAgent_AXIS_T2.asl:
+```
+...
+
++wanna_follow_crazy_one [source(A)]
+<-
+    .println("[TASK 3] I am the crazy one, follow me!");
+    -+wanna_follow_me(A);
+    -wanna_follow_crazy_one.
+
+...
+
++!get_agent_to_aim
+<-
+    ...
+
+    if(wanna_follow_me(A)){
+        ?wanna_follow_me(A);
+        ?my_position(X,Y,Z);
+        .concat("order(move,",X,",",Z,")",Content);
+        .send_msg_with_conversation_id(A,tell,Content,"INT");
+        .println("[Task 3] Come and protect me!");
+        -+wanna_follow_me(A);
+    }
+    ...
+```
+
+For the new follower soldier, we started setting some instructions in the "init" plan. This instructions consist in sending a `wanna_follow_crazy_one` message to every axis soldier. Then the `wanna_follow_crazy_one` plan of the crazy soldier will be trigger, so the follower soldier will be register and every tick the crazy soldier will send him a message with an order to move to his actual position.
+
+Note that whenever the crazy soldier gets stuck in a wall, this follower soldier will stop following him and will continue as a regular soldier.
+
+## jasonAgent_AXIS_T3.asl
+```
+ +!init
+    <-  
+    ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
+    .my_team("AXIS", E1);
+    .println("[TASK - 3] Who is the crazy one??");
+    .concat("wanna_follow_crazy_one", Content);
+    .send_msg_with_conversation_id(E1,tell,Content,"INT").
+```
