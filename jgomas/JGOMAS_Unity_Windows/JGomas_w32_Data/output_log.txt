@@ -23,7 +23,7 @@ Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Window
 Loading C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.036 seconds
+- Completed reload, in  0.045 seconds
 desktop: 1920x1080 59Hz; virtual: 3840x1080 at -1920,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -41,7 +41,7 @@ STARTING
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-WELCOME MESSAGE: JGOMAS Render Engine Server v. 0.1.0, Wed Nov 03 15:04:30 CET 2021
+WELCOME MESSAGE: JGOMAS Render Engine Server v. 0.1.0, Wed Nov 03 15:31:17 CET 2021
 
 
  
@@ -52,15 +52,24 @@ CONNECTION MESSAGE: COM Server: Connection Accepted
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-MAP RECEIVED: map_03
+MAP RECEIVED: map_01
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-Bases 25 28 28 31
+Bases 16 28 20 31
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
 Connected to JGOMAS ACC
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+FROM THREAD: going to close de connection.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+CONNECTION MESSAGE: COM Server: Connection Closed
+
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
