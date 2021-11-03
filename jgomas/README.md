@@ -114,3 +114,51 @@ Note that whenever the crazy soldier gets stuck in a wall, this follower soldier
     .concat("wanna_follow_crazy_one", Content);
     .send_msg_with_conversation_id(E1,tell,Content,"INT").
 ```
+
+# Task 4 - Implement an ALLIED agent that locates the "crazy" agent and kills him. The "crazy" agent can defend himself.
+From the part of the crazy agent, this task is similar to the previous one, the agent also need to follow the him, but in this case a new `wanna_kill_crazy_one[source(A)]` plan is created. This new plan behaves as the previous `wanna_follow_crazy_one` plan.
+
+The new plan is activated once another soldier sends him a message with the `wanna_kill_crazy_one` plan, the crazy agent creates the new belief `wanna_kill_me(A)`, where `A` is the agent that want to kill the crazy soldier. 
+
+As in the previous task, in the `get_agent_to_aim` plan, the crazy agent sends to the follower (the killer) an order to follow him.
+
+## jasonAgent_AXIS_T2.asl:
+```
+...
+
++wanna_kill_crazy_one [source(A)]
+    <-
+    .println("[TASK 4] I am the crazy one, try to kill me!");
+    -+wanna_kill_me(A);
+    -wanna_kill_crazy_one.
+
+...
+
++!get_agent_to_aim
+    <-
+    ...
+    if(wanna_kill_me(B)){
+        ?wanna_kill_me(B);
+        ?my_position(X,Y,Z);
+        .concat("order(move,",X,",",Z,")",Content1);
+        .send_msg_with_conversation_id(B,tell,Content1,"INT");
+        .println("[Task 4] Come, and kill me!");
+        -+wanna_kill_me(B);
+    }
+    ...
+```
+
+For the new killer agent, as the previous follower soldier, we started setting some instructions in the "init" plan, sending a message to every axis soldier. Then the `wanna_kill_crazy_one` plan of the crazy soldier will be trigger, registering the soldier, and sending an order with the actual position to him every tick.
+
+## jasonAgent_ALLIED_T4.asl:
+```
++!init
+    <- 
+    ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
+    .my_team("AXIS", E1);
+    +speak(1);
+    .concat("wanna_kill_crazy_one", Content);
+    .send_msg_with_conversation_id(E1,tell,Content,"INT").
+```
+
+**Important note**: there is a bug that we could not solve, that is when this agent crosses with the crazy one, our killer agent stops its execution.
