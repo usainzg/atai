@@ -23,7 +23,7 @@ Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Window
 Loading C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.035 seconds
+- Completed reload, in  0.036 seconds
 desktop: 1920x1080 59Hz; virtual: 3840x1080 at -1920,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -33,18 +33,6 @@ Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Window
 Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\UnityScript.Lang.dll (this message is harmless)
 Platform assembly: C:\Users\unaih\Documents\CODE\atai\jgomas\JGOMAS_Unity_Windows\JGomas_w32_Data\Managed\Boo.Lang.dll (this message is harmless)
 Shader 'Nature/Terrain/Specular': fallback shader 'Nature/Terrain/Diffuse' not found
-NullReferenceException: Object reference not set to an instance of an object
-  at ClientRender.ObjectClicked (UnityEngine.GameObject obj) [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.GameObject:SendMessage(String, Object)
-MouseDetection:OnMouseDown()
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.HitInfo:SendMessage(String)
-UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
-UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32, Int32)
- 
-(Filename:  Line: -1)
-
 GUI button pressed...127.0.0.1
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
@@ -53,7 +41,7 @@ STARTING
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-WELCOME MESSAGE: JGOMAS Render Engine Server v. 0.1.0, Wed Nov 03 14:07:32 CET 2021
+WELCOME MESSAGE: JGOMAS Render Engine Server v. 0.1.0, Wed Nov 03 15:04:30 CET 2021
 
 
  
@@ -64,11 +52,11 @@ CONNECTION MESSAGE: COM Server: Connection Accepted
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-MAP RECEIVED: map_01
+MAP RECEIVED: map_03
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
-Bases 16 28 20 31
+Bases 25 28 28 31
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
