@@ -1,7 +1,7 @@
 # Task 1 - Implement an ALLIED agent that shows his position and distance to the flag and his distance to the base.
 For this task we create a new file called `jasonAgent_ALLIED_T1.asl`, is a variation of the original `jasonAgent_ALLIED.asl` file. To accomplish the task, we edited the `get_agent_to_aim` plan in the new file, the plan is executed every time the agent looks for objects in his Field Of View  (*FOV*). Using the beliefs `?mi_position`, `?objective`, `?distance`, `?base_position`, etc. We calculate the distance to the flag and to the base, and we print agent's position.
 
-## get_agent_to_aim:
+## jasonAgent_ALLIED_T1.asl:
 ```
 ?my_position(X, Y, Z);
 .println("[TASK 1] My position: ", math.round(X),", ", math.round(Z));
@@ -24,17 +24,16 @@ As in the first task, we edited the `get_agent_to_aim` plan, but in this case we
 
 Until we reach the 10 ticks to generate the random number, the tick counter is increased, removing `rand_mov(N)` and adding a new `rand_mov(N+1)`. We also removed all the `order(...)` beliefs.
 
-## "Init" plan:
+## jasonAgent_AXIS_T2.asl:
 ```
 +!init
     <- 
     ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
     -+is_crazy(1);
     -+rand_mov(1).
-```
 
-## get_agent_to_aim:
-```
+...
+
 +!get_agent_to_aim
     <-
     ...
@@ -162,3 +161,34 @@ For the new killer agent, as the previous follower soldier, we started setting s
 ```
 
 **Important note**: there is a bug that we could not solve, that is when this agent crosses with the crazy one, our killer agent stops its execution.
+
+# Task 5 - Include a new task at your choice.
+For this task we created a new **BOSS RUNNER** soldier, that his main objective is to take the flag and return to his base. This soldier is limited in many aspects, for example it has no ammo, so it can't shoot. But in other aspects is superpowered, for example, it has 1500 HP (health points), so is tricky to kill it. 
+
+As the agent can't defend himself, when this soldier is under fire, his whole team goes to his position to help it. The `perform_injury_action` is used for this, when the soldier gets hit, the plan will check if the counter `H` that is defined in the `help_ticks(H)` belief has reached the threshold (5). So, if the threshold is reached, the soldier will create a `order(help)` belief and will restart the help tick counter with `help_ticks(0)`. 
+
+When the `order(help)` is introduced, the team will help the soldier, nota that this is only performed when the `H` counter reached the threshold value (5).
+
+## jasonAgent_ALLIED_T5.asl:
+```
+...
+
++!perform_injury_action 
+    <- 
+    if(help_ticks(5)){
+        +order(help);
+        -help_ticks(5);
+        +help_ticks(0);
+    }
+    ?help_ticks(H);
+    -+help_ticks(H+1).
+
+...
+
++!init
+    <- 
+    ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
+    +my_health(1000);
+    +my_ammo(0);
+    +help_ticks(5).
+```
