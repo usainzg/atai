@@ -188,7 +188,7 @@ When the `order(help)` is introduced, the team will help the soldier, nota that 
 +!init
     <- 
     ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
-    +my_health(1000);
+    // +my_health(1000); -> Edited because is like cheating, not allowed in the competition!
     +my_ammo(0);
     +help_ticks(5).
 ```

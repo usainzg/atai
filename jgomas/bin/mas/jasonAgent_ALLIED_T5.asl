@@ -251,6 +251,6 @@ type("CLASS_SOLDIER").
 
 +!init
    <- ?debug(Mode); if (Mode<=1) { .println("YOUR CODE FOR init GOES HERE.")};
-   +my_health(1000);
+   //+my_health(1000); -> Cambiado para no hacer trampas!
    +my_ammo(0);
    +help_ticks(5).
