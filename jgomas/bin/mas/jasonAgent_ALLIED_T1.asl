@@ -55,9 +55,12 @@ type("CLASS_SOLDIER").
 
 
 ?objective(FlagX,FlagY, FlagZ);
-!distance(pos(FlagX,FlagY,FlagZ)); // Calculate de distance from agent's position to the flag
-?distance(D);
-.println("[TASK 1] Distance to the flag: ", math.round(D), " units");
+if(not objectivePackTaken(on)){
+    !distance(pos(FlagX,FlagY,FlagZ)); // Calculate de distance from agent's position to the flag
+    ?distance(D);
+    .println("[TASK 1] Distance to the flag: ", math.round(D), " units");
+}
+
 
 
 ?base_position(BaseX,BaseY,BaseZ);
